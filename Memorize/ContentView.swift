@@ -47,7 +47,9 @@ struct ContentView: View {
     
     func themeSelector(themeName: String, symbol: String) -> some View {
         Button(action: {
-            let theme = themes[themeName, default: []]
+            var theme = themes[themeName, default: []]
+            let randomNumber = Int.random(in: 1..<theme.count)
+            theme = Array(theme[0...randomNumber])
             emojis = (theme + theme).shuffled()
             currentTheme = themeName
         }, label: {
