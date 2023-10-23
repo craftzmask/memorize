@@ -43,7 +43,7 @@ struct ContentView: View {
     
     func themeSelector(themeName: String, symbol: String) -> some View {
         Button(action: {
-            emojis = themes[themeName, default: []]
+            emojis = themes[themeName, default: []].shuffled()
         }, label: {
             Image(systemName: symbol)
         })
