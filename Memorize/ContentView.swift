@@ -13,7 +13,13 @@ struct ContentView: View {
         "halloween": ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃"],
         "animal": ["🐈", "🐕", "🐿️", "🐇", "🦇", "🐒", "🐁"],
     ]
+    let colorThemes = [
+        "vehicle": Color.red,
+        "halloween": Color.orange,
+        "animal": Color.green
+    ]
     
+    @State var currentTheme = "vehicle"
     @State var emojis: [String] = []
     
     var body: some View {
@@ -43,6 +49,7 @@ struct ContentView: View {
         Button(action: {
             let theme = themes[themeName, default: []]
             emojis = (theme + theme).shuffled()
+            currentTheme = themeName
         }, label: {
             VStack {
                 Image(systemName: symbol)
@@ -60,7 +67,7 @@ struct ContentView: View {
                     .aspectRatio(2 / 3, contentMode: .fit)
             }
         }
-        .foregroundColor(.orange)
+        .foregroundColor(colorThemes[currentTheme])
     }
 }
 
