@@ -9,15 +9,9 @@ import SwiftUI
 
 struct ContentView: View {
     let themes = [
-        "vehicle": ["🚗", "🚛", "🚁", "🚃", "🛳️", "🛩️", "🚂", "🚗", "🚛", "🚁", "🚃", "🛳️", "🛩️", "🚂"],
-        "halloween": ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃", "👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃"],
-        "animal": ["🐈", "🐕", "🐿️", "🐇", "🦇", "🐒", "🐁", "🐈", "🐕", "🐿️", "🐇", "🦇", "🐒", "🐁"],
-    ]
-    
-    let themeAndSymbols = [
-        "vehicle": "car",
-        "halloween": "flame",
-        "animal": "pawprint"
+        "vehicle": ["🚗", "🚛", "🚁", "🚃", "🛳️", "🛩️", "🚂"],
+        "halloween": ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃"],
+        "animal": ["🐈", "🐕", "🐿️", "🐇", "🦇", "🐒", "🐁"],
     ]
     
     @State var emojis: [String] = []
@@ -27,7 +21,11 @@ struct ContentView: View {
             Text("Memorize!").font(.largeTitle)
             
             ScrollView {
-                cards
+                if emojis.isEmpty {
+                    Text("Choose a theme to start")
+                } else {
+                    cards
+                }
             }
             
             HStack {
@@ -43,9 +41,13 @@ struct ContentView: View {
     
     func themeSelector(themeName: String, symbol: String) -> some View {
         Button(action: {
-            emojis = themes[themeName, default: []].shuffled()
+            let theme = themes[themeName, default: []]
+            emojis = (theme + theme).shuffled()
         }, label: {
-            Image(systemName: symbol)
+            VStack {
+                Image(systemName: symbol)
+                Text(themeName.capitalized).font(.footnote)
+            }
         })
         .font(.largeTitle)
         .imageScale(.large)
