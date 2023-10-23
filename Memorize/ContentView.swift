@@ -8,22 +8,52 @@
 import SwiftUI
 
 struct ContentView: View {
-    let emojis = ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃"]
-    @State var cardCount = 4
+    let themes = [
+        "vehicle": ["🚗", "🚛", "🚁", "🚃", "🛳️", "🛩️", "🚂", "🚗", "🚛", "🚁", "🚃", "🛳️", "🛩️", "🚂"],
+        "halloween": ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃", "👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃"],
+        "animal": ["🐈", "🐕", "🐿️", "🐇", "🦇", "🐒", "🐁", "🐈", "🐕", "🐿️", "🐇", "🦇", "🐒", "🐁"],
+    ]
+    
+    let themeAndSymbols = [
+        "vehicle": "car",
+        "halloween": "flame",
+        "animal": "pawprint"
+    ]
+    
+    @State var emojis: [String] = []
     
     var body: some View {
         VStack {
             Text("Memorize!").font(.largeTitle)
+            
             ScrollView {
                 cards
+            }
+            
+            HStack {
+                themeSelector(themeName: "vehicle", symbol: "car")
+                Spacer()
+                themeSelector(themeName: "halloween", symbol: "flame")
+                Spacer()
+                themeSelector(themeName: "animal", symbol: "pawprint")
             }
         }
         .padding()
     }
     
+    func themeSelector(themeName: String, symbol: String) -> some View {
+        Button(action: {
+            emojis = themes[themeName, default: []]
+        }, label: {
+            Image(systemName: symbol)
+        })
+        .font(.largeTitle)
+        .imageScale(.large)
+    }
+    
     var cards: some View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
-            ForEach(0..<cardCount, id: \.self) { index in
+            ForEach(emojis.indices, id: \.self) { index in
                 CardView(content: emojis[index])
                     .aspectRatio(2 / 3, contentMode: .fit)
             }
