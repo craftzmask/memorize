@@ -45,6 +45,18 @@ struct ContentView: View {
         .padding()
     }
     
+    func widthThatBestFits(cardCount: Int) -> CGFloat {
+        if cardCount <= 4 {
+            return 120
+        } else if cardCount <= 9 {
+            return 100
+        } else if cardCount <= 16 {
+            return 80
+        } else {
+            return 60
+        }
+    }
+    
     func themeSelector(themeName: String, symbol: String) -> some View {
         Button(action: {
             var theme = themes[themeName, default: []]
@@ -63,7 +75,7 @@ struct ContentView: View {
     }
     
     var cards: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 120))]) {
+        LazyVGrid(columns: [GridItem(.adaptive(minimum: widthThatBestFits(cardCount: emojis.count)))]) {
             ForEach(emojis.indices, id: \.self) { index in
                 CardView(content: emojis[index])
                     .aspectRatio(2 / 3, contentMode: .fit)
