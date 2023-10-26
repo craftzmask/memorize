@@ -7,15 +7,23 @@
 
 import Foundation
 
-class EmojiMemoryGame {
+class EmojiMemoryGame: ObservableObject {
     private static let emojis = ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃"]
     
-    private var model = MemoryGame(numberOfPairsOfCards: 5) { pairIndex in
-        if emojis.indices.contains(pairIndex) {
-            return emojis[pairIndex]
-        } else {
-            return "⁉️"
+    private static func createMemoryGame() -> MemoryGame<String> {
+        return MemoryGame(numberOfPairsOfCards: 5) { pairIndex in
+            if emojis.indices.contains(pairIndex) {
+                return emojis[pairIndex]
+            } else {
+                return "⁉️"
+            }
         }
+    }
+    
+    @Published private var model = createMemoryGame()
+    
+    func shuffle() {
+        model.shuffle()
     }
     
     var cards: [MemoryGame<String>.Card] {
