@@ -55,6 +55,7 @@ struct CardView: View {
             
             base.fill().opacity(card.isFaceUp ? 0 : 1)
         }
+        .padding(4)
     }
 }
 
