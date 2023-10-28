@@ -18,7 +18,6 @@ struct EmojiMemoryGameView: View {
             
             Button(action: {
                 viewModel.shuffle()
-                
             }, label: {
                 Text("Shuffle").font(.largeTitle)
             })
@@ -32,6 +31,9 @@ struct EmojiMemoryGameView: View {
                 CardView(card: card)
                     .aspectRatio(2 / 3, contentMode: .fit)
                     .animation(.default, value: viewModel.cards)
+                    .onTapGesture {
+                        viewModel.choose(card)
+                    }
             }
         }
         .foregroundColor(.orange)
