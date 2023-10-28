@@ -44,6 +44,13 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
+    mutating func resetCards() {
+        cards.indices.forEach {
+            cards[$0].isFaceUp = false
+            cards[$0].isMatched = false
+        }
+    }
+    
     struct Card: Equatable, Identifiable {
         var isFaceUp = false
         var isMatched = false
