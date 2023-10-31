@@ -12,6 +12,8 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         VStack {
+            Text(viewModel.themeName)
+                .font(.largeTitle)
             ScrollView { cards }
             Button("New Game") { viewModel.newGame() }
                 .font(.title)
@@ -57,6 +59,6 @@ struct CardView: View {
 
 struct EmojiMemoryGameView_Previews: PreviewProvider {
     static var previews: some View {
-        EmojiMemoryGameView(viewModel: EmojiMemoryGame())
+        EmojiMemoryGameView(viewModel: EmojiMemoryGame(themes: Theme.sampleData))
     }
 }

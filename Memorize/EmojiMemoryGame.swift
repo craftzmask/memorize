@@ -9,59 +9,42 @@ import Foundation
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    private static let themes = [
-        Theme(
-            name: "halloween",
-            emoji: ["👻", "🕷️", "😈", "💀", "🦇", "🧛‍♂️", "🎃", "🧙", "😱", "🙀"],
-            numberOfPairs: 10,
-            color: .orange
-        ),
-        Theme(
-            name: "vehicle",
-            emoji: ["🚂", "🚗", "🚁", "🛳️", "🛩️", "🚛", "🚃", "🏍️", "🛴", "🚲"],
-            numberOfPairs: 10,
-            color: .red
-        ),
-        Theme(
-            name: "animal",
-            emoji: ["🐒", "🐿️", "🐁", "🐈", "🐕", "🦇", "🐇", "🐝", "🦋", "🐖"],
-            numberOfPairs: 10,
-            color: .brown
-        ),
-        Theme(
-            name: "tree",
-            emoji: ["🌺", "🌲", "🎄", "🌴", "🍄", "🌵", "🌹", "🪷", "🌳", "🪴"],
-            numberOfPairs: 10,
-            color: .green
-        ),
-        Theme(
-            name: "universe",
-            emoji: ["🌙", "🌞", "🌎", "🪐", "🛸", "☄️", "⭐️", "🌌", "📡", "🛰️"],
-            numberOfPairs: 10,
-            color: .pink
-        ),
-        Theme(
-            name: "face",
-            emoji: ["😀", "🤓", "😎", "😒", "😣", "😕", "😛", "🤪", "😱", "🥳"],
-            numberOfPairs: 10,
-            color: .yellow
-        ),
-    ]
-    
-    private static var theme = themes[0]
-        
-    private static func createMemoryGame() -> MemoryGame<String> {
-        theme = themes[Int.random(in: 0..<themes.count)]
+    private static func createMemoryGame(theme: Theme<String>) -> MemoryGame<String> {
         return MemoryGame(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
+            // Return emoji randomly if the number of pairs less than
+            // the number of emoji in the theme's emoji set
+            if theme.numberOfPairs < theme.emoji.count {
+                if let randomEmoji = theme.emoji.randomElement() {
+                    return randomEmoji
+                }
+            }
+            // Otherwise, just return every single emoji in the set
             if theme.emoji.indices.contains(pairIndex) {
                 return theme.emoji[pairIndex]
-            } else {
-                return "⁉️"
             }
+            
+            return ""
         }
     }
     
-    @Published private var model = createMemoryGame()
+    private var themes: [Theme<String>]
+    private var currentTheme: Theme<String>
+    private var colorMapping: [String: Color]
+    @Published private var model: MemoryGame<String>
+    
+    init(themes: [Theme<String>]) {
+        self.themes = themes
+        self.currentTheme = themes[Int.random(in: 0..<themes.count)]
+        self.model = EmojiMemoryGame.createMemoryGame(theme: currentTheme)
+        self.colorMapping = [
+            "orange": Color.orange,
+            "red":    Color.red,
+            "brown":  Color.brown,
+            "green":  Color.green,
+            "pink":   Color.pink,
+            "yellow": Color.yellow
+        ]
+    }
     
     // MARK: - Intents
     
@@ -74,7 +57,8 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     func newGame() {
-        model = EmojiMemoryGame.createMemoryGame()
+        self.currentTheme = themes[Int.random(in: 0..<themes.count)]
+        model = EmojiMemoryGame.createMemoryGame(theme: currentTheme)
     }
     
     var cards: [MemoryGame<String>.Card] {
@@ -82,6 +66,13 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     var currentThemeColor: Color {
-        EmojiMemoryGame.theme.color
+        if let color = colorMapping[currentTheme.color] {
+            return color
+        }
+        return .accentColor // default color
+    }
+    
+    var themeName: String {
+        currentTheme.name.capitalized
     }
 }
