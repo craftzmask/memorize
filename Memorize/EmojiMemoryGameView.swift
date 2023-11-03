@@ -14,7 +14,12 @@ struct EmojiMemoryGameView: View {
         VStack {
             Text(viewModel.themeName)
                 .font(.largeTitle)
-            ScrollView { cards }
+            Text("Current Score: \(viewModel.currentScore)")
+                .font(.title2)
+            
+            ScrollView {
+                cards
+            }
             Button("New Game") { viewModel.newGame() }
                 .font(.title)
         }

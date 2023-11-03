@@ -69,4 +69,8 @@ class EmojiMemoryGame: ObservableObject {
     var themeName: String {
         currentTheme.name.capitalized
     }
+    
+    var currentScore: Int {
+        model.points
+    }
 }
