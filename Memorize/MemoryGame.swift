@@ -36,6 +36,9 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                     if cards[chosenIndex].content == cards[potentialMatchedIndex].content {
                         cards[chosenIndex].isMatched = true
                         cards[potentialMatchedIndex].isMatched = true
+                    } else {
+                        cards[chosenIndex].isSeen = true
+                        cards[potentialMatchedIndex].isSeen = true
                     }
                 } else {
                     theOneAndOnlyCardIsFaceUp = chosenIndex
@@ -43,11 +46,18 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
                 cards[chosenIndex].isFaceUp = true
             }
         }
+        
+        for card in cards {
+            if card.isSeen {
+                print(card.content)
+            }
+        }
     }
     
     struct Card: Equatable, Identifiable {
-        var isFaceUp = true
+        var isFaceUp = false
         var isMatched = false
+        var isSeen = false
         let content: CardContent
         
         let id: String
