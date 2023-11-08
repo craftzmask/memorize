@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
-    private static func createMemoryGame(theme: Theme<String>) -> MemoryGame<String> {
+    private static func createMemoryGame(of theme: Theme<String>) -> MemoryGame<String> {
         return MemoryGame(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
             // Return randomly emoji
             let shuffledEmojis = theme.emoji.shuffled()
@@ -29,7 +29,7 @@ class EmojiMemoryGame: ObservableObject {
     init(themes: [Theme<String>]) {
         self.themes = themes
         self.currentTheme = themes[Int.random(in: 0..<themes.count)]
-        self.model = EmojiMemoryGame.createMemoryGame(theme: currentTheme)
+        self.model = EmojiMemoryGame.createMemoryGame(of: currentTheme)
         self.colorMapping = [
             "orange": Color.orange,
             "red":    Color.red,
@@ -52,7 +52,7 @@ class EmojiMemoryGame: ObservableObject {
     
     func newGame() {
         self.currentTheme = themes[Int.random(in: 0..<themes.count)]
-        model = EmojiMemoryGame.createMemoryGame(theme: currentTheme)
+        model = EmojiMemoryGame.createMemoryGame(of: currentTheme)
     }
     
     var cards: [MemoryGame<String>.Card] {
