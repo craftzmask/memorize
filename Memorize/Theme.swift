@@ -13,15 +13,17 @@ struct Theme<CardContent> {
     let numberOfPairs: Int
     let color: String
     
-    init(name: String, emoji: [CardContent], numberOfPairs: Int = Int.random(in: 2..<10), color: String) {
+    init(name: String, emoji: [CardContent], numberOfPairs: Int? = nil, color: String) {
         self.name = name
         self.emoji = emoji
-        self.numberOfPairs = numberOfPairs
+        self.numberOfPairs = numberOfPairs ?? emoji.count
         self.color = color
     }
 }
 
 extension Theme<String> {
+    static let defaultNumberOfPairs = 10
+    
     static let sampleData =
     [
         Theme(
@@ -37,11 +39,13 @@ extension Theme<String> {
         Theme(
             name: "animal",
             emoji: ["🐒", "🐿️", "🐁", "🐈", "🐕", "🦇", "🐇", "🐝", "🦋", "🐖"],
+            numberOfPairs: Int.random(in: 0..<defaultNumberOfPairs),
             color: "brown"
         ),
         Theme(
             name: "tree",
             emoji: ["🌺", "🌲", "🎄", "🌴", "🍄", "🌵", "🌹", "🪷", "🌳", "🪴"],
+            numberOfPairs: Int.random(in: 0..<defaultNumberOfPairs),
             color: "green"
         ),
         Theme(
