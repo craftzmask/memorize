@@ -10,7 +10,8 @@ import SwiftUI
 
 class EmojiMemoryGame: ObservableObject {
     private static func createMemoryGame(of theme: Theme<String>) -> MemoryGame<String> {
-        return MemoryGame(numberOfPairsOfCards: theme.numberOfPairs) { pairIndex in
+        let numberOfPairs = min(theme.emoji.count, theme.numberOfPairs)
+        return MemoryGame(numberOfPairsOfCards: numberOfPairs) { pairIndex in
             // Return randomly emoji
             let shuffledEmojis = theme.emoji.shuffled()
             if shuffledEmojis.indices.contains(pairIndex) {
